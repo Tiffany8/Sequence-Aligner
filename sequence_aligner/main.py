@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from datetime import datetime
 
 from fasta_parser import FastaParser
-from sequence_aligner import SequenceAligner
+from sequence_aligner_two import SequenceAligner
 from tools import make_storage_path, write_results_to_file
 
 
