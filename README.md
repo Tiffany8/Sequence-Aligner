@@ -16,7 +16,7 @@ fasta_example_2.txt).
 In order to install,
 
 ```
-pip install sequence_aligner
+pip install SequenceAligner
 ```
 
 To use aligner from the command line, you run the following commands:
