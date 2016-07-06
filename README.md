@@ -76,9 +76,26 @@ than half.
 
 
 ### Next Steps
-* Improve efficiency/runtime with additonal optimizations.
-* Improve 'matchiness' algorithm -- right now, my 'score' is merely 
-based on length of overlap at a given state of the anchor sequence.
-More pre-processing could be done before commencing alignment in 
-order to score the level of 'matchiness' between all pairs of sequences.
- 
+* Improve efficiency/runtime with additional optimizations.
+* Introduce pre-processing to improve efficiency/runtime and account for 
+data sets with multiple sequences at any given step that may have the 
+highest ‘score’ or circumstances where choosing the highest ‘score’ at a 
+given step will allow all sequences in the data set to be aligned. 
+One method would be to pre-process each sequence to determine whether 
+it is ‘matchy’ with every other sequence - where ‘matchy’ is defined as 
+at greater than 50% overlap and the degree of ‘matchy-ness’ is 
+determined by the amount of overlap of the 2 sequences. Matrixes which 
+determine the degree of overlap of the 2 sequences could be used in the 
+pre-processing and could reduce the need to determine all possible 
+sub-sequences within the comparison of 2 sequences. Once pre-processing 
+is completed, for the first sequence determine the second sequence to 
+align with it based on the sequence with highest ‘matchy-ness’ score 
+with the first sequence. Since the pre-processed ‘matchy-ness’ of the 
+second sequence selected with all other sequences has been determined, 
+limited additional processing of the matchy-ness would be needed to 
+determine the third sequence to align. If you encounter a situation in 
+which there are no matchy sequences to align and all sequences have not 
+yet been aligned - walk back to the last sequence which had at least 2 
+matchy sequences and choose the next highest score and repeat align the 
+most matchy sequences from that step (while avoiding additional 
+processing). 
