@@ -5,6 +5,7 @@ with open('README.md') as readme_file:
 setup(name='SequenceAligner',
       version='0.1',
       author='T Williams',
+      author_email='trw.visions@gmail.com',
       description='FASTA sequence aligner.',
       long_description=readme,
       packages=find_packages(exclude=['tests']),
