@@ -62,7 +62,7 @@ sequence.
 
 ## Caveats/Issues
 * One issue I dealt with was speed.  After many iterations of 
-refacting, I was able to bring runtime down from ~45-50 min to ~10-11
+refactoring, I was able to bring runtime down from ~45-50 min to ~10-11
  min. 
 * This program assumes that sequences overlap and that there are no 
 mutations.
