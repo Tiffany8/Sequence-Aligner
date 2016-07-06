@@ -3,9 +3,7 @@
 
 """ In this module resides the engine of the Sequence Aligner."""
 from collections import defaultdict
-from datetime import datetime
 from progress.bar import Bar
-
 
 
 class SequenceAligner(object):
@@ -29,7 +27,7 @@ class SequenceAligner(object):
         Method that takes a list of overlapping sequences and returns a
         single, algined sequence
             - the first seq in the list is designated the 'anchor seq'
-            - a 'score' based on the amount of overlap with anchor seq generated
+            - 'score' based on the amount of overlap with anchor seq generated
             - the seq with max overlap with anchor sequence is aligned with the
                 anchor sequence and subsequently removed from the sequence_list
             - iteration occurs until sequence list is empty
@@ -107,7 +105,6 @@ class SequenceAligner(object):
         more-than-half- to full- length are generated.
         :return:
         """
-        ss = datetime.now()
         current_sub_seqs = defaultdict(set)
         for sequence in self.sequence_list:
             self.sub_sequences_progress.next()
@@ -116,7 +113,7 @@ class SequenceAligner(object):
             for start in xrange(range_start, range_end + 1):
                 the_range = xrange(start, range_end)
                 combos = set([sequence[left:right] for
-                        left, right in enumerate(the_range, 0)])
+                              left, right in enumerate(the_range, 0)])
                 current_sub_seqs[sequence].update(combos)
 
         self.sub_sequences_progress.finish()
@@ -124,7 +121,7 @@ class SequenceAligner(object):
 
     def __check_for_false_match(self, max_sub_seq):
         """
-        It could be the case that the max_sub_seq exist is a repeating sequence.
+        It could be the case that the max_sub_seq is a repeating sequence.
         In order to confirm that the correct sub_seq has been selected to
         align into the anchor sequence, a check must occur to ensure that
         exist no non-matching overhangs between current_sequence's
