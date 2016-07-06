@@ -13,8 +13,9 @@ class SequenceAligner(object):
     """
 
     def __init__(self, sequence_list):
-        self.anchor_sequence = set(sequence_list).pop()
-        self.sequence_list = sequence_list[1:]
+        aset = set(sequence_list)
+        self.anchor_sequence = aset.pop()
+        self.sequence_list = list(aset)
         self.__curr_idx_left = 0
         self.__curr_idx_right = 0
         self.__anchor_idx_left = 0
@@ -22,20 +23,6 @@ class SequenceAligner(object):
         self.__current_sequence = None
 
     def __generate_subsequence_combos(self):
-        combo_list = []
-        start = datetime.now()
-        for index in xrange(len(self.__current_sequence) / 2 + 1,
-                           len(self.__current_sequence) + 1):
-            regex = '(?=(\w{%d}))' % index
-            sub_seqs = re.finditer(regex, self.__current_sequence)
-            for sub_seq in sub_seqs:
-                if sub_seq.group(1) in self.anchor_sequence:
-                    combo_list.append(sub_seq.group(1))
-        elapsed = datetime.now() - start
-        # print "Generate subseq combos: {} sec".format(elapsed.total_seconds())
-        return combo_list
-
-    def __generate_subsequence_combos_no_regex(self):
         combos = set()
         ss = datetime.now()
         range_start = len(self.__current_sequence)/2 + 1
@@ -49,9 +36,6 @@ class SequenceAligner(object):
         elapsed = datetime.now() - ss
         # print "time to generate combos- no regex: {} sec".format(elapsed.total_seconds())
         return combos
-
-    def __score_overlaps(self):
-        pass
 
     def __check_for_false_match(self, max_seq):
         self.__anchor_idx_left = self.anchor_sequence.find(max_seq)
@@ -94,16 +78,19 @@ class SequenceAligner(object):
 
     def get_aligned_sequence(self):
         # while self.sequence_list:
-        start = datetime.now()
-        list_index = 0
-        while list_index <= len(self.sequence_list):
+        start_full = datetime.now()
+        # list_index = 0
+        fail_count = 0
+        while len(self.sequence_list) > 0 and fail_count != 5:
             # generate score card
             print "starting list item # {}".format(len(self.sequence_list))
             score_card = self.generate_score_card(self.sequence_list)
 
             # pull item where len is greatest
             print "score card len: {}".format(len(score_card))
-
+            if not score_card:
+                fail_count = fail_count + 1
+                continue
             matched_seq_info = max(score_card.iteritems(),
                                    key=lambda x: len(x[1][0]))
             max_len = len(matched_seq_info[1][0])
@@ -119,8 +106,8 @@ class SequenceAligner(object):
 
                 self.sequence_list.remove(match[0])
             print "anchor seq len {}".format(len(self.anchor_sequence))
-            list_index = list_index + 1
-        elapsed = datetime.now() - start
+            # list_index = list_index + 1
+        elapsed = datetime.now() - start_full
         print "Job completed at {}".format(datetime.now().isoformat())
         print "TOTAL TIME: {} min".format(elapsed.total_seconds())
         print "final sequence list len: {}".format(len(self.sequence_list))
@@ -139,6 +126,7 @@ class SequenceAligner(object):
             #  generate subsequence combos
 
             cc = current_combos = self.__generate_subsequence_combos_no_regex()
+            print "pre-filter combination list len: {}".format(len(cc))
 
             # filter out those not found in anchor sequence
             ss = datetime.now()
@@ -146,6 +134,8 @@ class SequenceAligner(object):
             matched_combo_list = set([s for s in cc if s in
                                       sa[:min(len(sa), len(s))]
                                       or s in sa[-min(len(sa), len(s)):]])
+            print "post-filter combination list len: {}".format(len(matched_combo_list))
+            # print "len of all strings in list".format([len(i) for i in matched_combo_list])
             # matched_combo_list = filter(lambda x: x in self.anchor_sequence,
             #                             current_combos)
             elapsed = datetime.now() - ss
@@ -173,6 +163,5 @@ class SequenceAligner(object):
             elapsed = datetime.now() - start
             # print "time to store in dictionary {} sec".format(elapsed.total_seconds())
         elapsed = datetime.now() - start_score
-        print "score card generation total time {} seconds".format(
-            elapsed.total_seconds())
+        print "score card generation total time {} seconds".format(elapsed.total_seconds())
         return score_card
