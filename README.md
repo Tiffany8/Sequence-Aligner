@@ -77,6 +77,8 @@ than half.
 
 ### Next Steps
 * Improve efficiency/runtime with additional optimizations.
+* More test coverage (test for failures) and add exceptions if final
+aligned sequence is not found (faulty data set)
 * Introduce pre-processing to improve efficiency/runtime and account for 
 data sets with multiple sequences at any given step that may have the 
 highest ‘score’ or circumstances where choosing the highest ‘score’ at a 
@@ -99,3 +101,4 @@ yet been aligned - walk back to the last sequence which had at least 2
 matchy sequences and choose the next highest score and repeat align the 
 most matchy sequences from that step (while avoiding additional 
 processing). 
+* Dockerize!
