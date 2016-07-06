@@ -110,6 +110,7 @@ class SequenceAligner(object):
         ss = datetime.now()
         current_sub_seqs = defaultdict(set)
         for sequence in self.sequence_list:
+            self.sub_sequences_progress.next()
             range_start = len(sequence)/2 + 1
             range_end = len(sequence) + 1
             for start in xrange(range_start, range_end + 1):
@@ -117,7 +118,7 @@ class SequenceAligner(object):
                 combos = set([sequence[left:right] for
                         left, right in enumerate(the_range, 0)])
                 current_sub_seqs[sequence].update(combos)
-            self.sub_sequences_progress.next()
+
         self.sub_sequences_progress.finish()
         return current_sub_seqs
 

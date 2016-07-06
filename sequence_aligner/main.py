@@ -43,7 +43,7 @@ def main():
     print "#" * 10
     print "#" * 10
     ss = datetime.now()
-    print "Starting sequence alignment at {}".format(ss.isoformat())
+    print "Starting..."
     sa = SequenceAligner(sequence_list)
     results = sa.get_aligned_sequence()
     print "Process complete. Results on the way...."
