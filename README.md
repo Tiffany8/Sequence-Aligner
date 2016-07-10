@@ -77,6 +77,15 @@ than half.
 
 ### Next Steps
 * Improve efficiency/runtime with additional optimizations.
+  * 07/10/2016 update # 1 - install and run **Aligner** with [PyPy](http://pypy.org/) decreases runtime by ~3-5 min (depending on system)
+  * In order to run Aligner with PyPy, you'll need to install PyPy.
+  * I recommend installing PyPy with [Homebrew](http://brew.sh/).  
+  * Once Homebrew is installed, `brew install pypy`
+  * Next, I recommend installing *virtualenv* using PyPy: `pypy -m pip install virtualenv`
+  * Create a pypy virtualenv: `pypy -m virtualenv ~/<virtualenv-name>`, replacing <virtualenv-name> with name of choice
+  * Step inside the virutalenv: `source <virtualenv-name>/bin/activate`
+  * Install *Aligner* in pypy virtuanlenv: `pypy -m pip install SequenceAligner`
+  * Run *Aligner* 
 * More test coverage (test for failures) and add exceptions if final
 aligned sequence is not found (faulty data set)
 * Introduce pre-processing to improve efficiency/runtime and account for 
